@@ -48,8 +48,8 @@ public class SwaggerConfig {
                 "1.0",
                 "https://google.com",
                 new Contact("TESTING", "https://google.com","leangsengk90@gmail.com")//your name, url , email
-                ,"TESTING",
-                "https://google.com",
+                ,"http://localhost:8080/swagger-ui.html",
+                "http://localhost:8080/swagger-ui.html",
                 Collections.emptyList()
         );
 
