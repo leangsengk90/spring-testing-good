@@ -1,0 +1,8 @@
+version: "3.9"
+services:
+  spring-api:
+    container_name: "spring-api"
+    image: registry.asani.pro/spring-api:1.1.100
+    ports:
+      - "8082:8080"
+      
