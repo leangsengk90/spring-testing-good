@@ -1,0 +1,27 @@
+pipeline{
+  agent { label 'master' }
+  tools{
+    maven '3.8.6'
+  }
+  stages{
+    stage("Package Resources"){
+      sh """
+        mvn clean package
+      """
+    }
+
+    stage("Build Image"){
+      sh """
+        docker build -t xeng/spring-app:latest .
+      """
+    }
+
+    stage("Push to Registry"){
+      withCredentials([usernamePassword(credentialsId: 'xeng-docker-hub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+        sh """
+          docker login -u $USERNAME -p $PASSWORD
+          docker push xeng/spring-app:11.22.33
+        """
+      }
+    }
+}
