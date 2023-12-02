@@ -34,7 +34,7 @@ pipeline{
     stage("Deploy App"){
       steps{
         sh """
-          ansible-playbook -i kubernetes/ansible/inventory.ini workers \
+          ansible-playbook -i kubernetes/ansible/inventory.ini -l workers \
             -e workspace=$WORKSPACE \
             kubernetes/ansible/playbooks/deploy.yml
         """
