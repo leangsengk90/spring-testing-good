@@ -15,7 +15,7 @@ pipeline{
     stage("Build Image"){
       steps{
         sh """
-          docker build -t xeng/spring-app:11.22.33 .
+          docker build -t xeng/spring-app:$BUILD_NUMBER .
         """
       }
     }
@@ -25,9 +25,17 @@ pipeline{
         withCredentials([usernamePassword(credentialsId: 'xeng-docker-hub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
           sh """
             docker login -u $USERNAME -p $PASSWORD
-            docker push xeng/spring-app:11.22.33
+            docker push xeng/spring-app:$BUILD_NUMBER
           """
         }
+      }
+    }
+
+    stage("Update Version"){
+      steps{
+        sh """
+          sed -i "s+image:.*+image: xeng/spring-app:$BUILD_NUMBER+" kubernetes/spring-app.yml
+        """
       }
     }
 
