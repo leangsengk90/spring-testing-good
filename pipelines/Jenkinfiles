@@ -34,7 +34,7 @@ pipeline{
     stage("Update Version"){
       steps{
         sh """
-          sed -i "s+image:.*+image: xeng/spring:$BUILD_NUMBER+" /opt/kubernetes/spring-app.yml
+          sed -i "s+image:.*+image: xeng/spring:$BUILD_NUMBER+" kubernetes/spring-app.yml
         """
       }
     }
