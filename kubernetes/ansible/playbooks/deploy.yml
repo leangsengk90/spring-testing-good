@@ -3,7 +3,7 @@
   tasks:
     - name: Copy Deploy file
       copy:
-        src: {{ workspace }}/kubernetes
+        src: "{{ workspace }}"/kubernetes
         dest: /opt
 
     - name: Deploy App
