@@ -1,0 +1,15 @@
+- hosts: all
+  become: true
+  tasks:
+    - name: Copy file to Kubernetes Server
+      copy:
+        src: "{{ workspace }}/kubernetes"
+        dest: /opt
+        owner: leangsengk90
+        group: leangsengk90
+        mode: '0700'
+
+    - name: Deploy App
+      shell: |
+        kubectl apply -f /opt/kubernetes/spring-app.yml
+        
