@@ -15,7 +15,7 @@ pipeline{
     stage("Build Image"){
       steps{
         sh """
-          docker build -t xeng/spring:1111.2222 .
+          docker build -t xeng/spring:$BUILD_NUMBER .
         """
       }
     }
@@ -25,12 +25,11 @@ pipeline{
         withCredentials([usernamePassword(credentialsId: 'xeng-docker-hub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
           sh """
             docker login -u $USERNAME -p $PASSWORD
-            docker push xeng/spring:1111.2222
+            docker push xeng/spring:$BUILD_NUMBER
           """  
         }
       }
     }
-    //sed -i "s+image:.*+image: xeng/spring:123+" spring-app.yml
 
     stage("Update Version"){
       steps{
