@@ -8,4 +8,4 @@
 
     - name: Deploy App
       shell: |
-        kubectl apply -f /opt/kubernetes/deploy.yml
+        kubectl apply -f /opt/kubernetes/spring-app.yml
