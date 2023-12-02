@@ -28,9 +28,19 @@ pipeline{
             docker push xeng/spring:1111.2222
           """  
         }
-
       }
     }
+
+    stage("Deploy App"){
+      steps{
+        sh """
+          ansible-playbook -i ansible/inventory.ini -l workers \
+            -e workspace=$WORKSPACE \
+            ansible/playbooks/deploy.yml
+        """
+      }
+    }
+
 
   }
   
