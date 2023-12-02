@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: spring-app
-          image: spring-app:11.22.33
+          image: xeng/spring-app:11.22.33
           ports:
             - containerPort: 8080
 ---
