@@ -30,6 +30,15 @@ pipeline{
         }
       }
     }
+    //sed -i "s+image:.*+image: xeng/spring:123+" spring-app.yml
+
+    stage("Update Version"){
+      steps{
+        sh """
+          sed -i "s+image:.*+image: xeng/spring:$BUILD_NUMBER+" /opt/kubernetes/spring-app.yml
+        """
+      }
+    }
 
     stage("Deploy App"){
       steps{
