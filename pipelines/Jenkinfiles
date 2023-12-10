@@ -38,7 +38,7 @@ pipeline{
                     cd helm-chart
                     yq eval -i '.name = "my-app-uat"' my-app/Chart.yaml
                     yq eval -i '.version = "$BUILD_NUMBER"' my-app/Chart.yaml
-                    yq eval -i '.springApp.image.tag = "uat-$BUILD_NUMBER"' my-app/values.yml
+                    yq eval -i '.springApp.image.tag = "uat-$BUILD_NUMBER"' my-app/values.yaml
                     helm package my-app
                 """
             }
