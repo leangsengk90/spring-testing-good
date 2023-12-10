@@ -32,6 +32,18 @@ pipeline{
             }
         }
 
+        stage("Package and Push Helm Chart"){
+            steps{
+                sh """
+                    cd helm-chart
+                    yq eval -i '.name = "my-app-uat"' my-app/Chart.yaml
+                    yq eval -i '.version = "$BUILD_NUMBER"' my-app/Chart.yaml
+                    yq eval -i '.springApp.image.tag = "uat-$BUILD_NUMBER"' my-app/values.yml
+                    helm package my-app
+                """
+            }
+        }
+
     }
 
 }
