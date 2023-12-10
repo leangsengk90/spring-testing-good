@@ -48,10 +48,8 @@ pipeline{
             steps{
                 withCredentials([usernamePassword(credentialsId: 'nexus-auth', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
                     sh """
-                        pwd
-                        ls
-                        echo 'my-app-uat-"$BUILD_NUMBER".tgz'
-                        curl -u "$USER:$PASS" https://nexus-ui.asani.pro/repository/helm-repo/ --upload-file 'my-app-uat-"$BUILD_NUMBER".tgz'
+                        cd helm-chart
+                        curl -u "$USER:$PASS" https://nexus-ui.asani.pro/repository/helm-repo/ --upload-file "my-app-uat-"$BUILD_NUMBER".tgz"
                     """
                 }
                 
