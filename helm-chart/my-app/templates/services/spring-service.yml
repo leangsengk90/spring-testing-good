@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.springApp.name }}
+spec:
+  type: {{ .Values.springApp.type }}
+  selector:
+    {{- toYaml .Values.springApp.labels | nindent 4 }}
+  ports:
+    - port: {{ .Values.springApp.port }}
+      targetPort: {{ .Values.springApp.port }}
+      nodePort: {{ .Values.springApp.nodePort }}

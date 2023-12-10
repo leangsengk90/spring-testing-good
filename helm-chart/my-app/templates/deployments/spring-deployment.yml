@@ -1,0 +1,30 @@
+{{- if .Values.springApp }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.springApp.name }}
+spec:
+  replicas: {{ .Values.springApp.replicas }}
+  selector:
+    matchLabels:
+      {{- toYaml .Values.springApp.labels | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- toYaml .Values.springApp.labels | nindent 8 }}
+    spec:
+      imagePullSecrets:
+        - name: registry-secret
+      containers:
+        {{- with .Values.springApp }}
+        - name: {{ .name }}
+          image: {{ .image.name }}:{{ .image.tag }}
+          ports:
+            - containerPort: {{ .port }}
+        {{- end }}
+{{- else }}
+  {{- fail "Something went wrong" }}
+{{- end }}
+
+
+

@@ -1,0 +1,22 @@
+nginxApp:
+  labels:
+    app: nginx-app
+  name: nginx-app
+  replicas: 2
+  type: NodePort
+  image:
+    name: nginx
+    tag: 1.23.0
+  port: 80
+  nodePort: 30001
+
+springApp:
+  labels:
+    app: spring-app
+  name: spring-app
+  replicas: 1
+  image:
+    name: registry.asani.pro/spring-app
+    tag: 1.1.1
+  port: 8080
+  nodePort: 30002
