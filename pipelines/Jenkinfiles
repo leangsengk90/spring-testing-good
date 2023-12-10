@@ -42,8 +42,8 @@ pipeline{
                         yq eval -i '.springApp.image.tag = "$BUILD_NUMBER"' my-app/values.yaml
                         helm package my-app
 
-                        curl -u $USER:$PASS https://nexus-ui.asani.pro/repository/helm-repo/ --upload-file my-app-uat-$BUILD_NUMBER.tgz 
-                        """
+                        curl -u "$USER:$PASS" https://nexus-ui.asani.pro/repository/helm-repo/ --upload-file "my-app-uat-$BUILD_NUMBER.tgz"
+                    """
                 }
                 
             }
