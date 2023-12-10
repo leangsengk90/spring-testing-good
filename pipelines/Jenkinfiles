@@ -55,6 +55,16 @@ pipeline{
                 
             }
         }
+        
+        stage("Package Project"){
+            steps{
+                sh """
+                    ansible-playbook -i ansible/inventory.ini \
+                    -l workers \
+                    ansible/playbooks/deploy.yml
+                """
+            }
+        }
 
     }
 
