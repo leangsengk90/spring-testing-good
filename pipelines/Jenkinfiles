@@ -1,55 +1,37 @@
 pipeline{
-  agent { label 'built-in' }
-  tools{
-    maven '3.8.6'
-  }
-  stages{
-    stage("Package Resources"){
-      steps{
-        sh """
-          mvn clean package
-        """
-      }
+    agent { label 'built-in' }
+    tools{
+        maven "3.8.6"
     }
-
-    stage("Build Image"){
-      steps{
-        sh """
-          docker build -t xeng/spring:$BUILD_NUMBER .
-        """
-      }
-    }
-
-    stage("Push to Registry"){
-      steps{
-        withCredentials([usernamePassword(credentialsId: 'xeng-docker-hub', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
-          sh """
-            docker login -u $USERNAME -p $PASSWORD
-            docker push xeng/spring:$BUILD_NUMBER
-          """  
+    stages{
+        stage("Package Project"){
+            steps{
+                sh """
+                    clean package
+                """
+            }
         }
-      }
+
+        stage("Build Image"){
+            steps{
+                //registry.asani.pro
+                sh """
+                    docker build -t registry.asani.pro/spring-app:$BUILD_NUMBER .
+                """
+            }
+        }
+
+        stage("Login and Push Image"){
+            steps{
+                withCredentials([usernamePassword(credentialsId: 'nexus-auth', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+                    sh """
+                        docker login -u $USER -p $PASS registry.asani.pro
+                        docker push registry.asani.pro/spring-app:$BUILD_NUMBER
+                    """
+                }
+            }
+        }
+
     }
 
-    stage("Update Version"){
-      steps{
-        sh """
-          sed -i "s+image:.*+image: xeng/spring:$BUILD_NUMBER+" kubernetes/spring-app.yml
-        """
-      }
-    }
-
-    stage("Deploy App"){
-      steps{
-        sh """
-          ansible-playbook -i ansible/inventory.ini -l workers \
-            -e workspace=$WORKSPACE \
-            ansible/playbooks/deploy.yml
-        """
-      }
-    }
-
-
-  }
-  
 }
