@@ -32,16 +32,25 @@ pipeline{
             }
         }
 
-        stage("Package and Push Helm Chart"){
+        stage("Package Helm Chart"){
+            steps{
+                sh """
+                    cd helm-chart
+                    yq eval -i '.name = "my-app-uat"' my-app/Chart.yaml
+                    yq eval -i '.version = "$BUILD_NUMBER"' my-app/Chart.yaml
+                    yq eval -i '.springApp.image.tag = "$BUILD_NUMBER"' my-app/values.yaml
+                    helm package my-app
+                """ 
+            }
+        }
+
+        stage("Push Helm Chart"){
             steps{
                 withCredentials([usernamePassword(credentialsId: 'nexus-auth', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
                     sh """
-                        cd helm-chart
-                        yq eval -i '.name = "my-app-uat"' my-app/Chart.yaml
-                        yq eval -i '.version = "$BUILD_NUMBER"' my-app/Chart.yaml
-                        yq eval -i '.springApp.image.tag = "$BUILD_NUMBER"' my-app/values.yaml
-                        helm package my-app
-
+                        pwd
+                        ls
+                        echo "my-app-uat-$BUILD_NUMBER.tgz"
                         curl -u "$USER:$PASS" https://nexus-ui.asani.pro/repository/helm-repo/ --upload-file "my-app-uat-$BUILD_NUMBER.tgz"
                     """
                 }
