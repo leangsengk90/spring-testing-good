@@ -7,7 +7,7 @@ pipeline{
         stage("Package Project"){
             steps{
                 sh """
-                    clean package
+                    mvn clean package
                 """
             }
         }
