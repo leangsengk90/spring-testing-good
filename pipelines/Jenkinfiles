@@ -56,7 +56,7 @@ pipeline{
             }
         }
         
-        stage("Package Project"){
+        stage("Deploy"){
             steps{
                 sh """
                     ansible-playbook -i ansible/inventory.ini \
