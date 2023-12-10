@@ -5,6 +5,7 @@
   tasks:
     - name: Deploy App
       shell: |
+        helm repo add helm-repo https://nexus-ui.asani.pro/repository/helm-repo/ --username "admin" --password "123"
         helm repo update
         helm upgrade my-app-uat helm-repo/my-app-uat --install
         
