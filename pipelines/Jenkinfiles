@@ -32,6 +32,7 @@ pipeline{
             }
         }
 
+        /*
         stage("Package Helm Chart"){
             steps{
                 sh """
@@ -65,7 +66,7 @@ pipeline{
                 """
             }
         }
+        */
 
     }
-
 }
