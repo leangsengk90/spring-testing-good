@@ -32,6 +32,14 @@ pipeline{
             }
         }
 
+        stage("Trigger Argocd"){
+            steps{
+                build wait: false, propagate: false, job: 'argo-pipeline', parameters: [string(name: 'VERSION', value: "$BUILD_NUMBER")]
+            }
+        }
+
+        
+
         /*
         stage("Package Helm Chart"){
             steps{
