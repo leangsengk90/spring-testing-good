@@ -32,5 +32,11 @@ pipeline{
             }
         }
 
+        stage("Trigger Argocd Pipeline"){
+            steps{
+               build wait: false, propagate: false, job: 'argocd-pipeline', parameters: [string(name: 'VERSION', value: "$BUILD_NUMBER")] 
+            }
+        }
+
     }
 }
